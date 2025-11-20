@@ -47,7 +47,7 @@ const balanceRoutes = require("./src/routes/balanceRoutes");
 const incomeCategoryRoutes = require("./src/routes/incomeCategoryRoutes");
 const expenseCategoryRoutes = require("./src/routes/expenseCategoryRoutes");
 const auth = require("./src/middlewares/auth.middleware");
-const setup = require("./setup.jsp");
+const setup = require("./setup.js");
 const setupSwagger = require("./swagger.js");
 
 const app = express();

@@ -47,7 +47,7 @@ const balanceRoutes = require("./src/routes/balanceRoutes");
 const incomeCategoryRoutes = require("./src/routes/incomeCategoryRoutes");
 const expenseCategoryRoutes = require("./src/routes/expenseCategoryRoutes");
 const auth = require("./src/middlewares/auth.middleware");
-const setup = require("./setup");
+const { runMigrations } = require("./setup");
 const setupSwagger = require("./swagger.js");
 
 const app = express();
@@ -70,12 +70,10 @@ app.use("/api/expense-categories", auth, expenseCategoryRoutes);
 app.use("/api/income", auth, incomeRoutes);
 app.use("/api/expenses", auth, expenseRoutes);
 app.use("/api/balance", auth, balanceRoutes);
-setup();
+// setup();
 
 const PORT = process.env.PORT || 2225;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-  if (process.env.NODE_ENV !== "production") {
-    console.log(`Swagger -> http://localhost:${PORT}/api-docs`);
-  }
-});
+(async () => {
+  await runMigrations(); // 🔥 This runs the migrations safely
+  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+})();

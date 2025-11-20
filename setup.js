@@ -73,26 +73,21 @@
 
 // setup();
 const knex = require("knex");
-const knexfile = require("./knexfile");
+const config = require("../knexfile");
 
-const NODE_ENV = process.env.NODE_ENV || "development";
-const config = knexfile[NODE_ENV];
+async function runMigrations() {
+  const environment = process.env.NODE_ENV || "development";
+  const knexInstance = knex(config[environment]);
 
-// Create DB instance
-const db = knex(config);
-
-async function setup() {
   try {
     console.log("Running migrations...");
-
-    await db.migrate.latest();
-
-    console.log("Migrations completed successfully!");
+    await knexInstance.migrate.latest();
+    console.log("Migrations finished!");
   } catch (error) {
     console.error("Migration error:", error);
-  } finally {
-    await db.destroy();
   }
+
+  await knexInstance.destroy();
 }
 
-module.exports = setup;
+module.exports = { runMigrations };

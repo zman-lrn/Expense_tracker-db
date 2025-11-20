@@ -1,9 +1,21 @@
+// const knex = require("knex");
+// require("dotenv").config();
+
+// const db = knex({
+//   client: "pg",
+//   connection: process.env.DATABASE_URL,
+// });
+
+// module.exports = db;
 const knex = require("knex");
 require("dotenv").config();
 
 const db = knex({
   client: "pg",
-  connection: process.env.DATABASE_URL,
+  connection: {
+    connectionString: process.env.DATABASE_URL,
+    ssl: { rejectUnauthorized: false },
+  },
 });
 
 module.exports = db;

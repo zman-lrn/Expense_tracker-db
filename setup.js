@@ -72,35 +72,27 @@
 // }
 
 // setup();
+const knex = require("knex");
+const knexfile = require("./knexfile");
 
-require("dotenv").config();
-const path = require("path");
-const { exec } = require("child_process");
+const NODE_ENV = process.env.NODE_ENV || "development";
+const config = knexfile[NODE_ENV];
+
+// Create DB instance
+const db = knex(config);
 
 async function setup() {
   try {
     console.log("Running migrations...");
 
-    const NODE_ENV = process.env.NODE_ENV || "production";
+    await db.migrate.latest();
 
-    // Use knex CLI via exec
-    const knexPath = path.join(__dirname, "node_modules", ".bin", "knex");
-    const migrateCommand = `"${knexPath}" migrate:latest --env ${NODE_ENV} --knexfile "${path.join(
-      __dirname,
-      "knexfile.js"
-    )}"`;
-
-    exec(migrateCommand, (err, stdout, stderr) => {
-      if (err) return console.error("Migration error:", err);
-      if (stderr) console.error(stderr);
-      console.log(stdout);
-      console.log("Migrations completed successfully!");
-    });
+    console.log("Migrations completed successfully!");
   } catch (error) {
-    console.error("Error during setup:", error);
+    console.error("Migration error:", error);
+  } finally {
+    await db.destroy();
   }
 }
 
-// Export and auto-run if direct
 module.exports = setup;
-if (require.main === module) setup();

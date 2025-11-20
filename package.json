@@ -5,6 +5,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
+    "postdeploy": "npx knex migrate:latest --env production",
     "test": "jest --runInBand --detectOpenHandles"
   },
   "keywords": [],

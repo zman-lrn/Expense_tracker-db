@@ -97,4 +97,5 @@ async function setup() {
   }
 }
 
-setup();
+// EXPORT the setup function
+module.exports = setup;

@@ -74,6 +74,6 @@ app.use("/api/balance", auth, balanceRoutes);
 
 const PORT = process.env.PORT || 2225;
 (async () => {
-  await runMigrations(); // 🔥 This runs the migrations safely
+  await runMigrations();
   app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 })();

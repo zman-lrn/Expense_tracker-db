@@ -1,21 +1,21 @@
-const Redis = require("ioredis");
-const redis = new Redis({
-  host: process.env.REDIS_HOST || "127.0.0.1",
-  port: process.env.REDIS_PORT || 6379,
-  password: process.env.REDIS_PASSWORD || undefined,
-});
+// const Redis = require("ioredis");
+// const redis = new Redis({
+//   host: process.env.REDIS_HOST || "127.0.0.1",
+//   port: process.env.REDIS_PORT || 6379,
+//   password: process.env.REDIS_PASSWORD || undefined,
+// });
 
-async function get(key) {
-  const data = await redis.get(key);
-  return data ? JSON.parse(data) : null;
-}
+// async function get(key) {
+//   const data = await redis.get(key);
+//   return data ? JSON.parse(data) : null;
+// }
 
-async function set(key, value, ttlSeconds = 60) {
-  await redis.set(key, JSON.stringify(value), "EX", ttlSeconds);
-}
+// async function set(key, value, ttlSeconds = 60) {
+//   await redis.set(key, JSON.stringify(value), "EX", ttlSeconds);
+// }
 
-async function del(key) {
-  await redis.del(key);
-}
+// async function del(key) {
+//   await redis.del(key);
+// }
 
-module.exports = { redis, get, set, del };
+// module.exports = { redis, get, set, del };

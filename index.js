@@ -47,14 +47,14 @@ const balanceRoutes = require("./src/routes/balanceRoutes");
 const incomeCategoryRoutes = require("./src/routes/incomeCategoryRoutes");
 const expenseCategoryRoutes = require("./src/routes/expenseCategoryRoutes");
 const auth = require("./src/middlewares/auth.middleware");
-const setup = require("./setup");
+const setup = require("./setup.jsp");
 const setupSwagger = require("./swagger.js");
 
 const app = express();
 setupSwagger(app);
-setup();
-app.use(express.json());
 
+app.use(express.json());
+setup();
 // ⚠️ On Render, allow all origins or your frontend URL
 app.use(
   cors({

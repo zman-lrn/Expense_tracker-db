@@ -75,27 +75,20 @@
 
 require("dotenv").config();
 const knex = require("knex");
-
-// Use NODE_ENV to select environment
-const NODE_ENV = process.env.NODE_ENV || "development";
-
-const config = require("./knexfile")[NODE_ENV]; // load knex config for current env
+const config = require("./knexfile").production; // choose production explicitly
 
 async function setup() {
   try {
-    const db = knex(config); // initialize knex
+    const db = knex(config);
 
     console.log("Running migrations...");
-
-    await db.migrate.latest(); // run migrations programmatically
-
+    await db.migrate.latest();
     console.log("Migrations completed successfully!");
 
     await db.destroy(); // close connection
-  } catch (error) {
-    console.error("Error during setup:", error);
+  } catch (err) {
+    console.error("Error during setup:", err);
   }
 }
 
-// EXPORT the setup function
 module.exports = setup;

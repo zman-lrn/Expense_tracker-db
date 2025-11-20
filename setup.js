@@ -78,18 +78,16 @@ const { Client } = require("pg");
 const path = require("path");
 const { exec } = require("child_process");
 
-// Environment variables
-const DB_NAME = process.env.DB_NAME || "expense_tracker_db";
-const DB_USER = process.env.DB_USER || "postgres";
-const DB_PASSWORD = process.env.DB_PASSWORD || "1234";
-const DB_HOST = process.env.DB_HOST || "localhost";
-const DB_PORT = process.env.DB_PORT || 5432;
-const NODE_ENV = process.env.NODE_ENV || "development";
-
-// Determine if running locally
-const isLocal = DB_HOST === "localhost" || DB_HOST === "127.0.0.1";
-
 async function setup() {
+  const DB_NAME = process.env.DB_NAME || "expense_tracker_db";
+  const DB_USER = process.env.DB_USER || "postgres";
+  const DB_PASSWORD = process.env.DB_PASSWORD || "1234";
+  const DB_HOST = process.env.DB_HOST || "localhost";
+  const DB_PORT = process.env.DB_PORT || 5432;
+  const NODE_ENV = process.env.NODE_ENV || "development";
+
+  const isLocal = DB_HOST === "localhost" || DB_HOST === "127.0.0.1";
+
   try {
     if (isLocal) {
       console.log("Running local setup...");
@@ -130,21 +128,21 @@ async function setup() {
       "knexfile.js"
     )}"`;
 
-    // Use exec instead of spawn (works better on Render)
-    exec(migrateCommand, (error, stdout, stderr) => {
-      if (error) {
-        console.error(`Migration error: ${error.message}`);
-        return;
-      }
-      if (stderr) {
-        console.error(`Migration stderr: ${stderr}`);
-      }
+    const { exec } = require("child_process");
+    exec(migrateCommand, (err, stdout, stderr) => {
+      if (err) console.error(err);
+      if (stderr) console.error(stderr);
       console.log(stdout);
-      console.log("Migrations completed successfully!");
     });
   } catch (error) {
     console.error("Error during setup:", error);
   }
 }
 
-setup();
+// Export setup function
+module.exports = setup;
+
+// If run directly, execute immediately
+if (require.main === module) {
+  setup();
+}
